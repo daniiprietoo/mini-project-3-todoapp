@@ -1,0 +1,32 @@
+# Node dependencies
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Build outputs
+frontend/build/
+frontend/.next/
+backend/dist/
+
+# Logs & temporary files
+*.log
+yarn-error.log
+npm-debug.log
+pnpm-debug.log
+*.lock
+
+# Environment variables
+frontend/.env
+backend/.env
+.env.local
+.env.development.local
+.env.production.local
+
+# Vercel
+.vercel
+frontend/.vercel
+
+# Miscellaneous
+.DS_Store
+.idea/
+.vscode/
