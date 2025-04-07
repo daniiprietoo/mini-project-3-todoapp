@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: 'https://mini-project-3-backend.vercel.app/', // Your frontend URL
+  origin: ["http://localhost:5173", "https://your-frontend-url.vercel.app"],
   credentials: true
 }));
 
