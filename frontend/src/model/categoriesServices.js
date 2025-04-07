@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const HOST = import.meta.env.HOST // Match the port in your backend index.js
+const HOST = import.meta.env.VITE_API_URL // Match the port in your backend index.js
 
 const api = axios.create({
   baseURL: HOST,
