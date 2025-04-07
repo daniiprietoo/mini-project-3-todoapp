@@ -92,7 +92,7 @@ function Home({ user }) {
   };
 
   const isUserAdmin = () => {
-    return user && (user.isAdmin === true || user.is_admin === true);
+    return user && user.is_admin === true;
   };
 
   // Handle deleting a todo
@@ -112,6 +112,15 @@ function Home({ user }) {
       setError("Failed to delete task. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleTodoClick = (todo) => {
+    // If the clicked todo is already selected, unselect it
+    if (selectedTodo && selectedTodo.id === todo.id) {
+      setSelectedTodo(null);
+    } else {
+      setSelectedTodo(todo);
     }
   };
 
@@ -200,12 +209,21 @@ function Home({ user }) {
               </button>
               <button
                 onClick={() => {
-                  setShowAddForm(false);
-                  setShowEditForm(true);
-                  setSelectedTodo(null);
+                  // Only open edit form if a task is selected
+                  if (selectedTodo) {
+                    setShowEditForm(true);
+                    setShowAddForm(false);
+                  } else {
+                    // Alert the user that no task is selected
+                    alert("Please select a task to edit");
+                  }
                 }}
-                className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
-                disabled={loading}
+                className={`px-4 py-2 ${
+                  selectedTodo
+                    ? "bg-black text-white hover:bg-gray-800"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                } rounded-md transition-colors`}
+                disabled={loading || !selectedTodo}
               >
                 Edit Task
               </button>
@@ -283,21 +301,11 @@ function Home({ user }) {
       {/* Filter by category */}
       <div className="mb-6 flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <label className="text-sm font-medium text-gray-700">
-            Filter by:
-          </label>
-          <select
-            value={selectedCategory}
-            onChange={(e) => handleCategoryChange(e.target.value)}
-            className="text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          >
-            <option value="">All Categories</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+          <CategoryList
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onCategoryChange={handleCategoryChange}
+          />
         </div>
 
         <div className="text-sm text-gray-500">
@@ -325,7 +333,7 @@ function Home({ user }) {
             <TodoList
               todos={filteredTodos}
               selectedTodoId={selectedTodo?.id}
-              onTodoClick={setSelectedTodo}
+              onTodoClick={handleTodoClick}
               onTodoHover={setHoveredTodo}
               onTodoEdit={(todo) => {
                 setSelectedTodo(todo);

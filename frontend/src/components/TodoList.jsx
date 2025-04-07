@@ -78,7 +78,7 @@ function TodoList({
     if (onTodoHover) onTodoHover(null);
   };
 
-  console.log('admin', isAdmin);
+  console.log("admin", isAdmin);
 
   return (
     <div>

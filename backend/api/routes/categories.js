@@ -42,4 +42,24 @@ categoriesRouter.post("/", async (req, res) => {
   }
 });
 
+// delete a category
+categoriesRouter.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query("DELETE FROM categories WHERE id = $1", [
+      id,
+    ]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting category:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 export default categoriesRouter;

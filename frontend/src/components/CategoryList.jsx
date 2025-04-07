@@ -1,14 +1,36 @@
-// src/components/CategoryList.js
+// src/components/CategoryList.jsx
 import React from 'react';
 
-function CategoryList({ categories }) {
+function CategoryList({ categories, selectedCategory, onCategoryChange }) {
   return (
-    <select className="text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-      <option value="">All Categories</option>
+    <div className="flex flex-wrap gap-2 mb-4">
+      {/* "All Categories" button */}
+      <button
+        onClick={() => onCategoryChange("")}
+        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+          !selectedCategory
+            ? "bg-blue-600 text-white"
+            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+        }`}
+      >
+        All Categories
+      </button>
+      
+      {/* Category buttons */}
       {categories.map(category => (
-        <option key={category.id} value={category.id}>{category.name}</option>
+        <button
+          key={category.id}
+          onClick={() => onCategoryChange(category.id)}
+          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+            selectedCategory === category.id
+              ? "bg-blue-600 text-white"
+              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+          }`}
+        >
+          {category.name}
+        </button>
       ))}
-    </select>
+    </div>
   );
 }
 

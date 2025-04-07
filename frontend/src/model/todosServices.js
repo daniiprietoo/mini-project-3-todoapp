@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const HOST = 'http://localhost:3000'; // Match the port in your backend index.js
+const HOST = import.meta.env.HOST
 
 const api = axios.create({
   baseURL: HOST,

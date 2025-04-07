@@ -5,7 +5,6 @@ import { userServices } from "../model/userServices";
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -13,26 +12,36 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
 
     if (!username || !password) {
-      setError("user and password are required!");
+      // Use an alert instead of the error banner
+      alert("Username and password are required!");
       return;
     }
 
     try {
       setLoading(true);
-      setError("");
 
       // Call the login service
       const response = await userServices.login(username, password);
 
       if (response && response.user) {
         onLogin(response.user);
+
+        // Show a success alert
+        alert(
+          `Welcome ${
+            response.user.first_name || response.user.username
+          }! Login successful.`
+        );
+
+        // Redirect to home page
         navigate("/");
+      } else {
+        // Show an alert for unexpected response
+        alert("Login failed. Unexpected response from server.");
       }
-      
-      // redirect to home page
-      navigate("/");
     } catch (error) {
-      setError(error.message || "Login failed. Please check your credentials.");
+      // Show an alert for the error
+      alert(error.message || "Login failed. Please check your credentials.");
     } finally {
       setLoading(false);
     }
@@ -48,12 +57,6 @@ const Login = ({ onLogin }) => {
               Please enter your details to sign in
             </p>
           </div>
-
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md text-sm">
-              {error}
-            </div>
-          )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
