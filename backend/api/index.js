@@ -12,10 +12,13 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // Your frontend URL
+  credentials: true
+}));
 
 app.use('/users', userRouter);
-app.use('/books', categoriesRouter);
+app.use('/categories', categoriesRouter);
 app.use('/todos', todosRouter);
 
 app.get('/', (req, res) => {
